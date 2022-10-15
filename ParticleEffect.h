@@ -1,3 +1,9 @@
+/*
+* Pair Programming Simple Particle Effect Exercise
+*
+* Authors: Adam Carter, Ian Richardson
+*/
+
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -40,6 +46,7 @@ private:
 	};
 
 	Particle* particles[NUM_OF_PARTICLES];
+	bool spawnParticles;
 
 public:
 	// Constructors & Deconstructors

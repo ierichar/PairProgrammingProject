@@ -1,6 +1,14 @@
+/*
+* Pair Programming Simple Particle Effect Exercise
+*
+* Authors: Adam Carter, Ian Richardson
+*/
+
 #include "ParticleEffect.h"
 
 using namespace sf;
+using namespace std;
+#include <iostream>
 
 //*****************************************************************************
 // Particle 
@@ -53,6 +61,7 @@ bool ParticleEffect::Particle::isAlive() const {
 // ParticleEffect
 //*****************************************************************************
 ParticleEffect::ParticleEffect() {
+	spawnParticles = false;
 	for (auto x : particles)
 		x = nullptr;
 }
@@ -65,17 +74,28 @@ ParticleEffect::~ParticleEffect() {
 }
 
 void ParticleEffect::update() {
-	for (auto x : particles)
-		x->update();
+	if (spawnParticles) {
+		for (auto x : particles)
+			x->update();
+	}
 }
 
 void ParticleEffect::render(RenderWindow& window) {
+	if (spawnParticles) {
+		for (int i = 0; i < NUM_OF_PARTICLES; i++) {
+			particles[i]->render(window);
+			cout << particles[i]->getPosition().x;
+		}
+	}
+	/*
 	for (auto x : particles)
 		x->render(window);
+		*/
 }
 
 void ParticleEffect::Emit(const float x, const float y) {
 	// Applies force to particles (start moving here)
+	cout << "particle effect EMIT" << endl;
 	Vector2f temp, position;
 	position.x = x;
 	position.y = y;
@@ -84,6 +104,7 @@ void ParticleEffect::Emit(const float x, const float y) {
 		temp.y = RandomFloat();
 		this->AddParticle(i, "Circle", position, 100000, temp);
 	}
+	spawnParticles = true;
 }
 
 void ParticleEffect::AddParticle(short i, const std::string& str_shape,
@@ -91,6 +112,7 @@ void ParticleEffect::AddParticle(short i, const std::string& str_shape,
 
 	particles[i] = new Particle(str_shape, initialPosition, lifespan,
 		initialVector);
+
 }
 
 float ParticleEffect::RandomFloat() const {

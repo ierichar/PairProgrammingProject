@@ -49,7 +49,7 @@ int main()
 {
     RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "Particle Program");
 
-    ParticleEffect* PE = nullptr;
+    ParticleEffect* PE = new ParticleEffect();
 
     Event event;
     while (window.isOpen())
@@ -75,20 +75,25 @@ void handleInput(RenderWindow& window, Event e, ParticleEffect* PE) {
                 PE = nullptr;
             }
             // window.clear(); // Bad practice? (move to render)
-            PE = new ParticleEffect();
+            //PE = new ParticleEffect();
             PE->Emit(e.mouseButton.x, e.mouseButton.y);
+            
         }
     }
 }
 
 void update(ParticleEffect* PE) {
-    if (PE != nullptr)
+    //if (PE != nullptr)
         PE->update();
 }
 
 void render(RenderWindow& window, ParticleEffect* PE) {
-    if (PE != nullptr)
+    
+    //if (PE != nullptr) {
         PE->render(window);
+        
+    //}
+    //std::cout << PE->RandomFloat() << std::endl;
 
     window.display();
 }
