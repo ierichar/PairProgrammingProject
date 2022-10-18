@@ -24,20 +24,16 @@
 *
 * Controls:
 *  LMB - generate particle effect
+*  RMB - swap (permanently) to textured sprites
+* 
 */
 
 #include "ParticleEffect.h"
+#include "Game.h"
 
 #include <iostream>
 
 using namespace sf;
-
-//*****************************************************************************
-// Game Loop Functions
-//*****************************************************************************
-void handleInput(RenderWindow& window, Event e, ParticleEffect* PE);
-void update(ParticleEffect* PE);
-void render(RenderWindow& window, ParticleEffect* PE);
 
 //*****************************************************************************
 // Constants
@@ -47,48 +43,22 @@ void render(RenderWindow& window, ParticleEffect* PE);
 
 int main()
 {
+    Game G;
+    ParticleEffect PE;
+
     RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "Particle Program");
 
-    ParticleEffect* PE = nullptr;
-
     Event event;
+
     while (window.isOpen())
     {
         while (window.pollEvent(event))
         {
-            handleInput(window, event, PE);
+            G.handleInput(window, event, PE);
         }
-        update(PE);
-        render(window, PE);
+        G.update(PE);
+        G.render(window, PE);
     }
 
     return 0;
-}
-
-void handleInput(RenderWindow& window, Event e, ParticleEffect* PE) {
-    if (e.type == Event::Closed)
-        window.close();
-    if (e.type == Event::MouseButtonPressed) {
-        if (e.mouseButton.button == Mouse::Left) {
-            if (PE != nullptr) {
-                delete PE;
-                PE = nullptr;
-            }
-            // window.clear(); // Bad practice? (move to render)
-            PE = new ParticleEffect();
-            PE->Emit(e.mouseButton.x, e.mouseButton.y);
-        }
-    }
-}
-
-void update(ParticleEffect* PE) {
-    if (PE != nullptr)
-        PE->update();
-}
-
-void render(RenderWindow& window, ParticleEffect* PE) {
-    if (PE != nullptr)
-        PE->render(window);
-
-    window.display();
 }
